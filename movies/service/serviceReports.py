@@ -4,69 +4,104 @@ Created on Dec 5, 2017
 @author: Monica
 '''
 from domain.rentDTO import rentDTO
+from domain.rentersName import rentersName
+from domain.mostRentedMovies import rentedMovies
 class serviceReports:
     def __init__(self,repoR,repoC,repoM):
         self.__repositoryR = repoR
         self.__repositoryC = repoC
         self.__repositoryM = repoM
-    def createTheDTOList(self):
+              
+    def getListOfRentersAndNoRents(self):
         '''
-        creates an objectDTO list for all the renters 
+        get a list of rentersName objects
         '''
         rents=self.__repositoryR.getAll()
         cust=self.__repositoryC.getAll()
-        movies=self.__repositoryM.getAll()
         lst=[]
-        obj=rentDTO(0,0,"",0,"",0)
-        for i in rents:
+        
+        for i in range(len(rents)):
+            obj=rentersName("","")
             count=0
-            obj.set_idR(i.getId())
-            obj.set_idM(i.getMovie())
-            obj.set_idC(i.getCustomer())
             for j in cust:
-                if i.getCustomer()==int(j.getId()):
-                    obj.set_custName(j.getName())
-                    for k in movies:
-                        if i.getMovie()==int(k.getId()):
-                            obj.set_movName(k.getTitle())
+                if j.getId()==rents[i].getCustomer():
+                    obj.set_nameCustomer(j.getName())
+                    for k in rents:
+                        if k.getCustomer()==j.getId():
                             count+=1
-                obj.set_noRents(count)            
-                break
-            lst.append(obj)
+                    break
+            obj.set_noRents(count)
+            exist=False
+            l=0
+            while l<len(lst) and exist==False:
+                if lst[l].get_nameCustomer()==obj.get_nameCustomer():
+                    exist=True  
+                l+=1 
+            if exist==False:
+                lst.append(obj)
         return lst
-                
-                    
+      
     def getListsOfCustomersWithRentersByName(self):
         '''
         gets a list of customers who has movies rented
-        the list contains all the properties for a rentDTO object
-       '''
-        lst=self.createTheDTOList()
-        return sorted(lst, key=lambda k:k.get_custName())
-    
+        the list contains all the properties for a rentersName object
+        '''
+        
+        lst=self.getListOfRentersAndNoRents()
+        lst =sorted(lst,key=lambda k:k.get_nameCustomer())
+        return lst
+            
     def getListOfRentersAscendingByNoMovies(self):
         '''
         gets the list of renters ascending by the no of rented movies
         the list contains all the properties for a rentDTO object
         '''
-        renters=self.createTheDTOList()
+        renters=self.getListOfRentersAndNoRents()
         return sorted(renters,key=lambda k:k.get_noRents())
+        
+    def getListOfRentedMovies(self):
+        '''
+        gets a list of rented movies and their no of rents
+        '''
+        rents=self.__repositoryR.getAll()
+        movies=self.__repositoryM.getAll()
+        lst=[]
+        for i in range(len(rents)):
+            obj=rentedMovies("","")
+            count=0
+            for j in movies:
+                if j.getId()==rents[i].getMovie():
+                    obj.set_title(j.getTitle())
+                    for k in rents:
+                        if k.getMovie()==j.getId():
+                            count+=1
+                    break
+            obj.set_noRents(count)
+            exist=False
+            l=0
+            while l<len(lst) and exist==False:
+                if lst[l].get_title()==obj.get_title():
+                    exist=True  
+                l+=1 
+            if exist==False:
+                lst.append(obj)
+        return lst
         
     def mostRentedMovies(self):
         '''
         return a list with the most rented movies,those one with 
         the biggest no of renters and the number of the most rented movies
         '''
-        renters=self.createTheDTOList()
+        movies=self.getListOfRentedMovies()
         noMax=0
-        for i in range(len(renters)):
-            if int(renters[i].get_noRents())>noMax:
-                noMax=int(renters[i].get_noRents())
+        for i in range(len(movies)):
+            if int(movies[i].get_noRents())>noMax:
+                noMax=int(movies[i].get_noRents())
                 
         lst=[]
-        for i in renters:
+        for i in movies:
             if int(i.get_noRents())==noMax:
-                lst.append(i.get_movName())
+                lst.append(i.get_title())
             
         return noMax,lst
                  
@@ -74,12 +109,5 @@ class serviceReports:
         '''
         get a list of rentDTO objects with those renters
         who are in 30% renters with the most rented movies 
-        '''
-        renters=self.createTheDTOList()
-        top=0,3*len(renters)
-        keep=[]
-        for i in renters:
-            if i.get_noRents()==top:
-                keep.append(i)
-        
-        return keep
+       '''
+        pass

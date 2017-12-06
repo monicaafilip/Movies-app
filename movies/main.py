@@ -16,7 +16,6 @@ from repository.fileRepository import fileRepository
 from domain.movie import movie
 from domain.customer import customer
 import os
-from UI.reports import reports
 from service.serviceReports import serviceReports
 from domain.rent import rent
 def main():
@@ -37,7 +36,7 @@ def main():
         customersRepository=fileRepository(fileNameC,customer.readFromStr,customer.writeToStr)
         rentsRepository=fileRepository(fileNameR,rent.readFromStr,rent.writeToStr)
         
-    c=console(moviesService(moviesRepository,validatorMovie()),customersService(customersRepository,validatorCustomer()),rentsService(moviesRepository,customersRepository,rentsRepository,validatorRent()),reports(serviceReports))
+    c=console(moviesService(moviesRepository,validatorMovie()),customersService(customersRepository,validatorCustomer()),rentsService(moviesRepository,customersRepository,rentsRepository,validatorRent()),serviceReports(rentsRepository,customersRepository,moviesRepository))
     c.interface()
    
 

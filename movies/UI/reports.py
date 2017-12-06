@@ -35,7 +35,7 @@ class reports:
         '''
         get first 30% of renters which have the most rented movies
         '''
-        return self.__reports.top30()
+        return self.__srvReports.top30()
     
     def show(self):
         while True:

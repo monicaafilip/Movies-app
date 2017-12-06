@@ -80,6 +80,6 @@ class rentDTO:
 
     
     def __str__(self):
-        return "Identifier :"+str(self.__idR)+";customer id:"+str(self.__idC)+" with the name:"+self.__custName+";movie id: "+str(self.__idM)+" with the title:"+self.__movName+ "and the no of rents:"+str(self.__noRents) 
+        return "Id:"+str(self.__idR)+" customer id:"+str(self.__idC)+" with the name:"+self.__custName+" movie id: "+str(self.__idM)+" with the title:"+self.__movName+ " and rents:"+str(self.__noRents) 
     
     

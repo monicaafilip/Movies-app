@@ -5,13 +5,6 @@ Created on Nov 22, 2017
 '''
 from domain.rent import rent
 import random
-from service.serviceM import moviesService
-from service.serviceC import customersService
-from repository.repository import repository
-from validator.validatorMovie import validatorMovie
-from validator.validatorCustomer import validatorCustomer
-from nt import lstat
-
 class rentsService:
     def __init__(self,repoM,repoC,repoR,valid):
         '''
