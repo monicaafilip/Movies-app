@@ -4,9 +4,9 @@ Created on Nov 15, 2017
 @author: Monica
 '''
 from domain.customer import customer
-from controller.controllerC import customersController
-from repository.repoCustomers import customersRepository
+from service.serviceC import customersService
 from validator.validatorCustomer import validatorCustomer
+from repository.repository import repository
 def testCustomer():
     c=customer(1,"Popescu",1234567898765)
     assert c.getId()==1
@@ -22,8 +22,9 @@ def testCustomer():
     c1=customer(2,"Ionescu",1230507098765)
     assert c==c1
     
-def testControllerC():
-    ctrl=customersController(customersRepository(),validatorCustomer())
+def testServiceC():
+    customersRepository=repository()
+    ctrl=customersService(customersRepository,validatorCustomer())
     c=ctrl.createCustomer(1,"Berinde",1672030123345)
     assert c.getId()==1
     assert c.getName()=="Berinde"
@@ -43,7 +44,8 @@ def testControllerC():
     assert ctrl.getNrCustomers()==1
     
 def testRepositoryC():
-    repo=customersRepository()
+    customersRepository=repository()
+    repo=customersRepository
     cust=customer(1,"Andrada",2802020112345)
     repo.store(cust)
     assert repo.get(1)==cust

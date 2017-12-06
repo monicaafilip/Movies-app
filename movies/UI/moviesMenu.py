@@ -3,26 +3,26 @@ Created on Nov 13, 2017
 
 @author: Monica
 '''
-from repository.repoMovies import moviesRepositoryExceptions
+from repository.repository import repositoryExceptions
 from validator.validatorMovie import validatorMovieExceptions
 from validator.validatorCommands import validatorCommands,\
     validatorCommandsException
 class moviesMenu:
-    def __init__(self,contrlMovie):
-        self.__controllerMovie=contrlMovie
+    def __init__(self,srvMovie):
+        self.__serviceMovie=srvMovie
         self.valid=validatorCommands()
     def addMovie(self):
         '''
-        adds a movie to a customer
+        adds a movie
         '''
         idM=input("Give the id:")
         title=input("Give the title:")
         genre=input("Give the genre:")
         description=input("Give the description:")
         try:
-            m=self.__controllerMovie.createMovie(idM,title,genre,description)
+            m=self.__serviceMovie.createMovie(idM,title,genre,description)
             print(" Movie " + m.getTitle() + " added succesfully!\n")
-        except moviesRepositoryExceptions as ex:
+        except repositoryExceptions as ex:
             print(ex)
         except validatorMovieExceptions as ex:
             print(ex)
@@ -30,23 +30,23 @@ class moviesMenu:
             
     def removeAMovie(self):
         '''
-        removes a movie from a customer
+        removes a movie f
         '''
         idM=input("Give the id:")
         try:
-            self.__controllerMovie.remove(idM)
+            self.__serviceMovie.remove(idM)
             print("Movie removed succesfully!\n")
-        except moviesRepositoryExceptions as ex:
+        except repositoryExceptions as ex:
             print(ex)
         except validatorMovieExceptions as ex:
             print(ex)
             
     def removeAllMovies(self):
-        '''removes all movies from a customer'''
+        '''removes all movies '''
         try:
-            self.__controllerMovie.removeAll()
+            self.__serviceMovie.removeAll()
             print("Movies removed succesfully!\n")
-        except moviesRepositoryExceptions as ex:
+        except repositoryExceptions as ex:
             print(ex)
         except validatorMovieExceptions as ex:
             print(ex)
@@ -55,12 +55,12 @@ class moviesMenu:
         '''finds a movie by id'''
         idM=input("Give the id:")
         try:
-            m=self.__controllerMovie.find("id",idM)
+            m=self.__serviceMovie.find("id",idM)
             if len(m)==0:
                 print("No movie found!\n")
             else:
                 print("Movie found succesfully ! "+m.__str__())
-        except moviesRepositoryExceptions as ex:
+        except repositoryExceptions as ex:
             print(ex)
         except validatorMovieExceptions as ex:
             print(ex)
@@ -69,7 +69,7 @@ class moviesMenu:
         '''finds movies by title'''
         title=input("Give the title:")
         try:
-            m=self.__controllerMovie.find("title",title)
+            m=self.__serviceMovie.find("title",title)
             if len(m)==0:
                 print("No movie found!\n")
             else:
@@ -77,7 +77,7 @@ class moviesMenu:
                 while i<len(m):
                     print("Movie found succesfully! "+m[i].__str__())
                     i+=1
-        except moviesRepositoryExceptions as ex:
+        except repositoryExceptions as ex:
             print(ex)
         except validatorMovieExceptions as ex:
             print(ex)
@@ -86,7 +86,7 @@ class moviesMenu:
         '''finds movies by genre'''
         g=input("Give the genre:")
         try:
-            m=self.__controllerMovie.find("genre",g)
+            m=self.__serviceMovie.find("genre",g)
             if len(m)==0:
                 print("No movie found!\n")
             else:
@@ -94,17 +94,17 @@ class moviesMenu:
                 while i<len(m):
                     print("Movie found succesfully! "+m[i].__str__())
                     i+=1
-        except moviesRepositoryExceptions as ex:
+        except repositoryExceptions as ex:
             print(ex)
         except validatorMovieExceptions as ex:
             print(ex)
             
     def sortById(self):
         '''sorts the movies by id'''
-        if self.__controllerMovie.getNrMovies()==0:
+        if self.__serviceMovie.getNrMovies()==0:
             print("The list has no movies!\n")
         else:
-            movies=self.__controllerMovie.sortBy("id")
+            movies=self.__serviceMovie.sortBy("id")
             for i in movies:
                 print(i.__str__())
             print("List sorted succesfully!\n")
@@ -115,7 +115,7 @@ class moviesMenu:
         '''
         title=input("Give the title:")
         try:
-            m=self.__controllerMovie.filterBy("title",title)
+            m=self.__serviceMovie.filterBy("title",title)
             if len(m)==0:
                 print("No movie found with specified title!\n")
             else:
@@ -123,7 +123,7 @@ class moviesMenu:
                 while i<len(m):
                     print("Movie with the title "+title+":"+m[i].__str__())
                     i+=1
-        except moviesRepositoryExceptions as ex:
+        except repositoryExceptions as ex:
             print(ex)
         except validatorMovieExceptions as ex:
             print(ex)
@@ -134,7 +134,7 @@ class moviesMenu:
         '''
         genre=input("Give the genre:")
         try:
-            m=self.__controllerMovie.filterBy("genre",genre)
+            m=self.__serviceMovie.filterBy("genre",genre)
             if len(m)==0:
                 print("No movie found with specified genre!\n")
             else:
@@ -142,7 +142,7 @@ class moviesMenu:
                 while i<len(m):
                     print("Movie with the genre "+genre+":"+m[i].__str__())
                     i+=1
-        except moviesRepositoryExceptions as ex:
+        except repositoryExceptions as ex:
             print(ex)
         except validatorMovieExceptions as ex:
             print(ex)
@@ -156,9 +156,9 @@ class moviesMenu:
         newGenre=input("Give a new genre:")
         newDescription=input("Give a new description:")
         try:
-            self.__controllerMovie.update(newId,newTitle,newGenre,newDescription)
+            self.__serviceMovie.update(newId,newTitle,newGenre,newDescription)
             print("Movie modified succesfully!")
-        except moviesRepositoryExceptions as ex:
+        except repositoryExceptions as ex:
             print(ex)
         except validatorMovieExceptions as ex:
             print(ex)
@@ -167,7 +167,7 @@ class moviesMenu:
         '''shows a movie with an given id'''
         try:
             self.findById()
-        except moviesRepositoryExceptions as ex:
+        except repositoryExceptions as ex:
             print(ex)
         except validatorMovieExceptions as ex:
             print(ex)
@@ -175,15 +175,42 @@ class moviesMenu:
     def showAllMovies(self):
         '''shows all the movies'''
         printed=False
-        for i in self.__controllerMovie.getAll():
+        for i in self.__serviceMovie.getAll():
             print(i.__str__())
             printed=True
         if printed==False:
             print("There are't movies yet!\n")
             
+    def populateRandom(self,limit):
+        '''populate the repository with random elements
+        '''
+        try:
+            self.__serviceMovie.populateRandom(limit) 
+            print("The repository was populated successfully!\n")
+        except repositoryExceptions as ex:
+            print(ex)
+        
+    def groupeByGenre(self):
+        '''
+        prints the id sum of movies with the same genre
+        '''
+        movies=self.__serviceMovie.getAll()
+        grouped=[]
+        for i in movies:
+            grouped=[]
+            gen=i.getGenre()
+            for j in movies:
+                if j.getGenre()==gen:
+                    grouped.append(i)
+                    movies.remove(j)
+            summ=0
+            for j in range(len(grouped)):
+                summ+=grouped[j].getId()
+            print("The sum id with the genre " +gen+" is: "+str(summ)+".")
+            
     def show(self):
         while True:
-            print("===Movies menu===")
+            print("\n===Movies menu===")
             print("1.Add")
             print("2.Remove")
             print("3.Find")
@@ -191,18 +218,20 @@ class moviesMenu:
             print("5.Show")
             print("6.Sort by id")
             print("7.Filter")
+            print("8.Populate random")
+            print("9.The id sum of all genre")
             print("0.Exit")
             print()
             cmd=input("Give command:")
             try:
-                self.valid.validate(cmd,7)
+                self.valid.validate(cmd,9)
                 com=int(cmd)
                 if com==0:
                     return
                 elif com==1:
                     self.addMovie()
                 elif com==2:
-                    print("--Remove menu--")
+                    print("\n--Remove menu--")
                     print("1.Remove a movie")
                     print("2.Remove all movies")
                     print("0.Exit")
@@ -220,15 +249,15 @@ class moviesMenu:
                     except validatorCommandsException as ex:
                         print(ex)
                 elif com==3:
-                    print("--Find menu--")
+                    print("\n--Find menu--")
                     print("1.By id")
                     print("2.By title")
                     print("3.By genre")
                     print("0.Exit")
                     print()
-                    cmd=input("Give command")
+                    cmd=input("Give command:")
                     try:
-                        self.valid.validate(cmd,2)
+                        self.valid.validate(cmd,3)
                         com=int(cmd)
                         if com==0:
                             break
@@ -243,7 +272,7 @@ class moviesMenu:
                 elif com==4:
                     self.updateMovie()
                 elif com==5:
-                    print("--Show menu--")
+                    print("\n--Show menu--")
                     print("1.Show a movie")
                     print("2.Show all movies")
                     print("0.Exit")
@@ -263,7 +292,7 @@ class moviesMenu:
                 elif com==6:
                     self.sortById()
                 elif com==7:
-                    print("--Filter menu--")
+                    print("\n--Filter menu--")
                     print("1.Filter by title")
                     print("2.Filter by genre")
                     print("0.Exit")
@@ -279,6 +308,11 @@ class moviesMenu:
                             self.filterByGenre()
                     except validatorCommandsException as ex:
                         print(ex)
-                
+                elif com==8:
+                    limit=int(input("Give the number of movies:"))
+                    self.populateRandom(limit)
+                elif com==9:
+                    self.groupeByGenre()
             except validatorCommandsException as ex:
                 print(ex)
+

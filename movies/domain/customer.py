@@ -33,4 +33,13 @@ class customer:
    
     
     def __str__(self):
-        return "Customer "+self.__id+" "+self.__name+" "+self.__cnp
+        return "Customer "+str(self.__id)+" "+self.__name+" "+str(self.__cnp)
+
+    @staticmethod
+    def readFromStr(line):
+        words=line.split(" ")
+        return customer(int(words[0]),words[1],int(words[2]))
+    
+    @staticmethod
+    def writeToStr(customer):
+        return str(customer.getId())+" "+customer.getName()+" "+str(customer.getCnp())

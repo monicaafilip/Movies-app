@@ -36,8 +36,18 @@ class movie:
     
     def __lt__(self,other):
         return self.__id<other.__id
+    
     def __eq__(self,other):
         return self.__id==other.__id and self.__title==other.__title and self.__genre==other.__genre and self.__description==other.__description
    
     def __str__(self):
-        return " Movie "+self.__id+" "+self.__title +" "+self.__genre+" "+self.__description
+        return " Movie "+str(self.__id)+" "+self.__title +" "+self.__genre+" "+self.__description
+
+    @staticmethod
+    def readFromStr(line):
+        words=line.split(" ")
+        return movie(int(words[0]),words[1],words[2],words[3])
+    
+    @staticmethod
+    def writeToStr(movie):
+        return str(movie.getId())+" "+movie.getTitle()+" "+movie.getGenre()+" "+movie.getDescription()

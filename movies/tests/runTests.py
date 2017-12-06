@@ -3,13 +3,14 @@ Created on Nov 15, 2017
 
 @author: Monica
 '''
-from tests.testsMovie import testMovie,testControllerM, testRepositoryM
-from tests.testCustomer import testCustomer, testRepositoryC
-from tests.testCustomer import testControllerC
+from tests.testsMovie import testMovie,testServiceM, testRepositoryM
+from tests.testRent import testRepositoryR
+from tests.testCustomer import testCustomer, testServiceC, testRepositoryC
 def runTests():
     testMovie()
-    testControllerM()
+    testServiceM()
     testRepositoryM()
     testCustomer()
-    testControllerC()
+    testServiceC()
     testRepositoryC()
+    testRepositoryR()

@@ -4,7 +4,8 @@ Created on Nov 14, 2017
 @author: Monica
 '''
 from domain.customer import customer
-class customersController:
+import random
+class customersService:
     def __init__(self,repo,valid):
         '''
         initializes the customer
@@ -67,7 +68,7 @@ class customersController:
         filteredCustomers=[]
         for i in range(len(allCustomers)):
             if (nameK=="name" and allCustomers[i].getName()==valueK) :
-                filteredCustomers.append(allCustoemrs[i])
+                filteredCustomers.append(allCustomers[i])
         return filteredCustomers
        
     
@@ -103,3 +104,22 @@ class customersController:
         out:the number of customers
         '''
         return self.__repository.sizeOfList()
+    
+    
+    def populateRandom(self,limit):
+        while limit!=0:
+            idC=random.randrange(1000)
+            name=random.choices(["Ingrid","Camelia","Cosmin","Carmen","Filip","Tudor","Emi","Michael","Bella"])[0]
+            cnp=random.randint(1000000000000,100000000000000)
+            self.createCustomer(idC, name, cnp)
+            limit-=1
+
+    def getAllId(self):
+        '''
+        get a list with integer element with all the customers id
+        '''
+        lst=[]
+        for i in self.getAll():
+            lst.append(int(i.getId()))
+            
+        return lst

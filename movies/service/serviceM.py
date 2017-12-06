@@ -4,8 +4,10 @@ Created on Nov 13, 2017
 @author: Monica
 '''
 from domain.movie import movie
+import random
+from repository.repository import repository
 
-class moviesController:
+class moviesService:
     def __init__(self,repo,valid):
         '''
         initializes the movie
@@ -107,7 +109,21 @@ class moviesController:
         '''
         return self.__repository.sizeOfList()
     
-
-
-
+    def getAllId(self):
+        '''
+        get a list with integer element with all the movies id
+        '''
+        lst=[]
+        for i in self.getAll():
+            lst.append(int(i.getId()))
+            
+        return lst
     
+    def populateRandom(self,limit):
+        while limit!=0:
+            idM=random.randrange(1000)
+            title=random.choices(["Me before you","Inception","Divergent","If I stay","It","The age of Adaline","The everlasting","Interstellar"])[0]
+            genre=random.choices(["Love","Drama","Horror","Comedy","Action","SF"])[0]
+            description=random.choices(["The best","Amazing","The worst","Good","Wonderful",])[0]
+            self.createMovie(idM,title,genre,description)
+            limit-=1

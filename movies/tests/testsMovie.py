@@ -4,9 +4,10 @@ Created on Nov 15, 2017
 @author: Monica
 '''
 from domain.movie import movie
-from controller.controllerM import moviesController
+from service.serviceM import moviesService
 from validator.validatorMovie import validatorMovie
-from repository.repoMovies import moviesRepository
+from repository.repository import repository
+
 def testMovie():
     m=movie(1,"Me before you","Love","A good movie")
     assert m.getId()==1
@@ -26,8 +27,9 @@ def testMovie():
     assert m==m2
     
     
-def testControllerM():
-    c=moviesController(moviesRepository(),validatorMovie())
+def testServiceM():
+    moviesRepository=repository()
+    c=moviesService(moviesRepository,validatorMovie())
     m=c.createMovie(1,"The same","Tragedy","English movie")
     assert m.getId()==1
     assert m.getTitle()=="The same"
@@ -48,7 +50,7 @@ def testControllerM():
     assert c.getNrMovies()==1
     
 def testRepositoryM():
-    repo=moviesRepository()
+    repo=repository()
     mov=movie(1,"Divergent","Action","Wonderful")
     repo.store(mov)
     assert repo.get(1)==mov

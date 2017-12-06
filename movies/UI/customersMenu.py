@@ -3,14 +3,15 @@ Created on Nov 13, 2017
 
 @author: Monica
 '''
-from repository.repoCustomers import customersRepositoryExceptions
+from repository.repository import repositoryExceptions
 from validator.validatorCustomer import validatorCustomerExceptions
 from validator.validatorCommands import validatorCommands,\
     validatorCommandsException
 class customersMenu:
-    def __init__(self,contrlCustomer):
-        self.__controllerCustomer=contrlCustomer
+    def __init__(self,srvCustomer):
+        self.__serviceCustomer=srvCustomer
         self.valid=validatorCommands()
+        
     def addCustomer(self):
         '''
         adds a customer
@@ -19,9 +20,9 @@ class customersMenu:
         name=input("Give the name:")
         cnp=input("Give the cnp:")
         try:
-            c=self.__controllerCustomer.createCustomer(idC,name,cnp)
+            c=self.__serviceCustomer.createCustomer(idC,name,cnp)
             print(" Customer " + c.getName() + " added succesfully!\n")
-        except customersRepositoryExceptions as ex:
+        except repositoryExceptions as ex:
             print(ex)
         except validatorCustomerExceptions as ex:
             print(ex)
@@ -33,9 +34,9 @@ class customersMenu:
         '''
         idC=input("Give the id:")
         try:
-            self.__controllerCustomer.remove(idC)
+            self.__serviceCustomer.remove(idC)
             print("Customer removed succesfully!\n")
-        except customersRepositoryExceptions as ex:
+        except repositoryExceptions as ex:
             print(ex)
         except validatorCustomerExceptions as ex:
             print(ex)
@@ -43,9 +44,9 @@ class customersMenu:
     def removeAllCustomers(self):
         '''removes all customers from a customer'''
         try:
-            self.__controllerCustomer.removeAll()
+            self.__serviceCustomer.removeAll()
             print("Customers removed succesfully!\n")
-        except customersRepositoryExceptions as ex:
+        except repositoryExceptions as ex:
             print(ex)
         except validatorCustomerExceptions as ex:
             print(ex)
@@ -54,12 +55,12 @@ class customersMenu:
         '''finds a customer by id'''
         idC=input("Give the id:")
         try:
-            c=self.__controllerCustomer.find("id",idC)
+            c=self.__serviceCustomer.find("id",idC)
             if len(c)==0:
                 print("No customer found!\n")
             else:
                 print("Customer found succesfully! \n "+ c[0].__str__())
-        except customersRepositoryExceptions as ex:
+        except repositoryExceptions as ex:
             print(ex)
         except validatorCustomerExceptions as ex:
             print(ex)
@@ -68,7 +69,7 @@ class customersMenu:
         '''finds customers by name'''
         name=input("Give the name:")
         try:
-            c=self.__controllerCustomer.find("name",name)
+            c=self.__serviceCustomer.find("name",name)
             if len(c)==0:
                 print("No customer found!\n")
             else:
@@ -76,7 +77,7 @@ class customersMenu:
                 while i<len(c):
                     print("Customer found succesfully! \n "+ c[i].__str__())
                     i+=1
-        except customersRepositoryExceptions as ex:
+        except repositoryExceptions as ex:
             print(ex)
         except validatorCustomerExceptions as ex:
             print(ex)
@@ -85,22 +86,22 @@ class customersMenu:
         '''finds a customer by cnp'''
         cnp=input("Give the cnp:")
         try:
-            c=self.__controllerCustomer.find("cnp",cnp)
+            c=self.__serviceCustomer.find("cnp",cnp)
             if len(c)==0:
                 print("No customer found!\n")
             else:
                 print("Customer found succesfully! "+c[0].__str__())
-        except customersRepositoryExceptions as ex:
+        except repositoryExceptions as ex:
             print(ex)
         except validatorCustomerExceptions as ex:
             print(ex)
             
     def sortById(self):
         '''sorts the customers by id'''
-        if self.__controllerCustomer.getNrCustomers()==0:
+        if self.__serviceCustomer.getNrCustomers()==0:
             print("The list has no customers!\n")
         else:
-            customers=self.__controllerCustomer.sortBy("id")
+            customers=self.__serviceCustomer.sortBy("id")
             for i in customers:
                 print(i.__str__())
             print("List sorted succesfully!\n")
@@ -111,7 +112,7 @@ class customersMenu:
         '''
         name=input("Give the name:")
         try:
-            c=self.__controllerCustomers.filterByName("name",name)
+            c=self.__serviceCustomers.filterByName("name",name)
             if len(c)==0:
                 print("No customers with this name found!\n")
             else:
@@ -119,7 +120,7 @@ class customersMenu:
                 while i<len(c):
                     print("Customer with the name "+name+" :"+c[i].__str__())
                 i+=1
-        except customersRepositoryExceptions as ex:
+        except repositoryExceptions as ex:
             print(ex)
         except validatorCustomerExceptions as ex:
             print(ex)
@@ -130,9 +131,9 @@ class customersMenu:
         newName=input("Give a new name:")
         newCnp=input("Give a new cnp:")
         try:
-            self.__controllerCustomer.update(newId,newName,newCnp)
+            self.__serviceCustomer.update(newId,newName,newCnp)
             print("Customer modified succesfully!")
-        except customersRepositoryExceptions as ex:
+        except repositoryExceptions as ex:
             print(ex)
         except validatorCustomerExceptions as ex:
             print(ex)
@@ -141,7 +142,7 @@ class customersMenu:
         '''shows a customer with an given id'''
         try:
             self.findById()
-        except customersRepositoryExceptions as ex:
+        except repositoryExceptions as ex:
             print(ex)
         except validatorCustomerExceptions as ex:
             print(ex)
@@ -149,15 +150,25 @@ class customersMenu:
     def showAllCustomers(self):
         '''shows all the customers'''
         printed=False
-        for i in self.__controllerCustomer.getAll():
+        for i in self.__serviceCustomer.getAll():
             print(i.__str__())
             printed=True
         if printed==False:
-            print("There are't movies yet!\n")
-            
+            print("There are't customers yet!\n")
+           
+    def populateRandom(self,limit):
+        '''
+        populate the repository with random objects
+        '''
+        try:
+            self.__serviceCustomer.populateRandom(limit) 
+            print("The repository was populated successfully!\n")
+        except repositoryExceptions as ex:
+            print(ex)
+    
     def show(self):
         while True:
-            print("===Customers menu===")
+            print("\n===Customers menu===")
             print("1.Add")
             print("2.Remove")
             print("3.Find")
@@ -165,18 +176,19 @@ class customersMenu:
             print("5.Show")
             print("6.Sort by id")
             print("7.Filter by name")
+            print("8.Populate random")
             print("0.Exit")
             print()
             cmd=input("Give command:")
             try:
-                self.valid.validate(cmd,7)
+                self.valid.validate(cmd,8)
                 com=int(cmd)
                 if com==0:
                     return
                 elif com==1:
                     self.addCustomer()
                 elif com==2:
-                    print("--Remove menu--")
+                    print("\n--Remove menu--")
                     print("1.Remove a customer")
                     print("2.Remove all customers")
                     print("0.Exit")
@@ -194,7 +206,7 @@ class customersMenu:
                     except validatorCommandsException as ex:
                         print(ex)
                 elif com==3:
-                    print("--Find menu--")
+                    print("\n--Find menu--")
                     print("1.By id")
                     print("2.By name")
                     print("3.By cnp")
@@ -202,7 +214,7 @@ class customersMenu:
                     print()
                     cmd=input("Give command:")
                     try:
-                        self.valid.validate(cmd,2)
+                        self.valid.validate(cmd,3)
                         com=int(cmd)
                         if com==0:
                             break
@@ -237,5 +249,13 @@ class customersMenu:
                     self.sortById()
                 elif com==7:
                     self.filterByName()
+                elif com==8:
+                    limit=int(input("Give the number of customers:"))
+                    self.populateRandom(limit)
             except validatorCommandsException as ex:
                 print(ex)
+
+
+
+
+

@@ -40,5 +40,21 @@ class rent:
     def returnMovie(self):
         self.__status="returned"
         
+    def __eq__(self,other):
+        return isinstance(other, self.__class__) and self.__id==other.__id and self.__customer==other.__customer and self.__movie==other.__movie and self.__status==other.__status
+    
+    def __str__(self):
+        return " Rent "+str(self.__id)+" "+str(self.__movie) +" "+str(self.__customer)
+
+    
+    @staticmethod
+    def readFromStr(line):
+        words=line.split(" ")
+        return rent(int(words[0]),words[1],words[2])
+    
+    @staticmethod
+    def writeToStr(rent):
+        return str(rent.getId())+" "+str(rent.getMovie())+" "+str(rent.getCustomer())
+    
     
     
