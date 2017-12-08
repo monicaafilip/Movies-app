@@ -8,9 +8,15 @@ from validator.validatorMovie import validatorMovieExceptions
 from validator.validatorCommands import validatorCommands,\
     validatorCommandsException
 class moviesMenu:
-    def __init__(self,srvMovie):
+    def __init__(self,srvMovie,srvRent):
+        '''
+        initialize the class
+        in:    ->srvMovie=the movie service
+        '''
         self.__serviceMovie=srvMovie
         self.valid=validatorCommands()
+        self.__serviceRent=srvRent
+        
     def addMovie(self):
         '''
         adds a movie
@@ -20,8 +26,11 @@ class moviesMenu:
         genre=input("Give the genre:")
         description=input("Give the description:")
         try:
+            idM=int(idM)
             m=self.__serviceMovie.createMovie(idM,title,genre,description)
             print(" Movie " + m.getTitle() + " added succesfully!\n")
+        except ValueError:
+            print("The id can 't be string or empty!\n")
         except repositoryExceptions as ex:
             print(ex)
         except validatorMovieExceptions as ex:
@@ -30,12 +39,16 @@ class moviesMenu:
             
     def removeAMovie(self):
         '''
-        removes a movie f
+        removes a movie 
         '''
         idM=input("Give the id:")
         try:
+            idM=int(idM)
             self.__serviceMovie.remove(idM)
+            self.__serviceRent.removeAfterKey("movie",idM)
             print("Movie removed succesfully!\n")
+        except ValueError:
+            print("The id must be integer!\n")
         except repositoryExceptions as ex:
             print(ex)
         except validatorMovieExceptions as ex:
@@ -45,6 +58,7 @@ class moviesMenu:
         '''removes all movies '''
         try:
             self.__serviceMovie.removeAll()
+            self.__serviceRent.removeAll()
             print("Movies removed succesfully!\n")
         except repositoryExceptions as ex:
             print(ex)
@@ -309,8 +323,12 @@ class moviesMenu:
                     except validatorCommandsException as ex:
                         print(ex)
                 elif com==8:
-                    limit=int(input("Give the number of movies:"))
-                    self.populateRandom(limit)
+                    try:
+                        limit=int(input("Give the number of movies:"))
+                        self.populateRandom(limit)
+                    except ValueError:
+                        print("The limit must be an integer number!\n")
+                    
                 elif com==9:
                     self.groupeByGenre()
             except validatorCommandsException as ex:

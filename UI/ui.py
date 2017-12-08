@@ -58,9 +58,9 @@ class console:
                 if com==0:
                     return
                 elif com==1:
-                    moviesMenu(self.__serviceMovie).show()
+                    moviesMenu(self.__serviceMovie,self.__serviceRent).show()
                 elif com==2:
-                    customersMenu(self.__serviceCustomer).show()
+                    customersMenu(self.__serviceCustomer,self.__serviceRent).show()
                  
                 elif com==3:
                     rentsMenu(self.__serviceRent).show()

@@ -5,12 +5,11 @@ Created on Nov 13, 2017
 '''
 from domain.movie import movie
 import random
-from repository.repository import repository
 
 class moviesService:
     def __init__(self,repo,valid):
         '''
-        initializes the movie
+        initializes the class
         in:    -> repo:repoMovies
                -> valid:validatorMovie
         '''
@@ -125,5 +124,6 @@ class moviesService:
             title=random.choices(["Me before you","Inception","Divergent","If I stay","It","The age of Adaline","The everlasting","Interstellar"])[0]
             genre=random.choices(["Love","Drama","Horror","Comedy","Action","SF"])[0]
             description=random.choices(["The best","Amazing","The worst","Good","Wonderful",])[0]
-            self.createMovie(idM,title,genre,description)
+            #self.createMovie(idM,title,genre,description)
+            self.__repository.store(movie(idM,title,genre,description))
             limit-=1

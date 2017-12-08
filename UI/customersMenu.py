@@ -8,9 +8,10 @@ from validator.validatorCustomer import validatorCustomerExceptions
 from validator.validatorCommands import validatorCommands,\
     validatorCommandsException
 class customersMenu:
-    def __init__(self,srvCustomer):
+    def __init__(self,srvCustomer,srvRent):
         self.__serviceCustomer=srvCustomer
         self.valid=validatorCommands()
+        self.__serviceRent=srvRent
         
     def addCustomer(self):
         '''
@@ -34,8 +35,12 @@ class customersMenu:
         '''
         idC=input("Give the id:")
         try:
+            idC=int(idC)
             self.__serviceCustomer.remove(idC)
+            self.__serviceRent.removeAfterKey("customer",idC)
             print("Customer removed succesfully!\n")
+        except ValueError:
+            print("The id must be integer!\n")
         except repositoryExceptions as ex:
             print(ex)
         except validatorCustomerExceptions as ex:
@@ -250,8 +255,11 @@ class customersMenu:
                 elif com==7:
                     self.filterByName()
                 elif com==8:
-                    limit=int(input("Give the number of customers:"))
-                    self.populateRandom(limit)
+                    try:
+                        limit=int(input("Give the number of customers:"))
+                        self.populateRandom(limit)
+                    except ValueError:
+                        print("The limit must be an integer number!\n")
             except validatorCommandsException as ex:
                 print(ex)
 

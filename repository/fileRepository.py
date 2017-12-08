@@ -25,7 +25,7 @@ class fileRepository(repository):
                 line=line.strip()
                 if len(line)>0:
                     obj=self._readFromStr(line)
-                    self._elems[-1]=obj
+                    self._elems[obj.getId()]=obj
     
     def saveToFile(self):
         '''
@@ -33,7 +33,7 @@ class fileRepository(repository):
         changed into string
         '''
         with open(self._fileName,"w") as f:
-            for obj in self._elems:
+            for obj in self._elems.values():
                 line=self._writeToStr(obj)
                 f.write(line+"\n")
                 
@@ -41,17 +41,21 @@ class fileRepository(repository):
         '''
         append a line to the file
         '''
+        self.loadFromFile()
         with open(self._fileName,"a") as f:
             line=self._writeToStr(elem)
             f.write(line+"\n")
+       
             
     def store(self,elem):
         '''
         stores the element in file
         '''
-        repository.store(self, elem)
-        self.append(elem)
-        
+        self.loadFromFile()
+        repository.store(self,elem)
+        self.append(elem)   
+          
+    
     def clearList(self):
         '''
         removes all the elements
@@ -65,6 +69,7 @@ class fileRepository(repository):
         in:elem
         out:-
         '''  
+        self.loadFromFile()
         repository.modify(self, elem)
         self.saveToFile()
         
@@ -72,5 +77,6 @@ class fileRepository(repository):
         '''
         removes an element with a given id
         '''
+        self.loadFromFile()
         repository.remove(self, idd)
         self.saveToFile()

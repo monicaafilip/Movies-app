@@ -11,14 +11,11 @@ class rentedMovies:
     def get_title(self):
         return self.__title
 
-
     def get_noRents(self):
         return self.__noRents
 
-
     def set_title(self, value):
         self.__title = value
-
 
     def set_noRents(self, value):
         self.__noRents = value

@@ -8,7 +8,7 @@ import random
 class rentsService:
     def __init__(self,repoM,repoC,repoR,valid):
         '''
-        initializes a rent
+        initializes the service rent
         in:    ->repoM:repoMovies
                -> repoC:repoCustomers
                ->repoR:repoRents
@@ -62,6 +62,18 @@ class rentsService:
         removes a rent with an unique id:idR(in ->integer number)
         '''
         self.__repositoryR.remove(idR)
+        
+    def removeAfterKey(self,nameK,valueK):
+        '''
+        removes a rent after a given key and its value
+        in: ->nameK:the key name
+            ->valueK:the key value
+        '''
+        lst=self.getAll()
+        for i in range(len(lst)):
+            if (nameK=="movie" and valueK==int(lst[i].getMovie())) or \
+               ( nameK=="customer" and valueK==int(lst[i].getCustomer())):
+                self.__repositoryR.remove(lst[i].getId())
     
     def removeAll(self):
         '''
@@ -129,14 +141,9 @@ class rentsService:
             lst.append(int(i.getId()))
         return lst
     def populateRandom(self,limit):
-        if limit<len(self.randomMovies()) and limit<len(self.randomCustomer()):
-            while limit!=0:
-                idR=random.randrange(1000)
-                idM=random.choices(self.randomMovies())[0]
-                idC=random.choices(self.randomCustomer())[0]
-                rent=self.createRent(idR, idM, idC)
-                limit-=1
-        else:
-            limit=-1
-        return limit
-            
+        while limit!=0:
+            idR=random.randrange(1000)
+            idM=random.choices(self.randomMovies())[0]
+            idC=random.choices(self.randomCustomer())[0]
+            rent=self.createRent(idR, idM, idC)
+            limit-=1

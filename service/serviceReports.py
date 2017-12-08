@@ -5,7 +5,6 @@ Created on Dec 5, 2017
 '''
 from domain.rentersName import rentersName
 from domain.mostRentedMovies import rentedMovies
-from domain.topR import topR
 class serviceReports:
     def __init__(self,repoR,repoC,repoM):
         self.__repositoryR = repoR
@@ -75,7 +74,7 @@ class serviceReports:
                     for k in rents:
                         if k.getMovie()==j.getId():
                             count+=1
-                            break
+                    break
             obj.set_noRents(count)
             exist=False
             l=0
@@ -104,45 +103,10 @@ class serviceReports:
                 lst.append(i.get_title())
             
         return noMax,lst
-    
-    def getListOfMostRented(self):
-        '''
-        gets a list of top30renters object which contains the
-        customers for all the most rented movies
-        '''          
-        movies=self.__repositoryM.getAll()
-        noMax,mostRented=self.mostRentedMovies()
-        lst=[]
-        obj=topR("","",0)
-        for i in mostRented:
-            obj=topR("","",0)
-            obj.set_titleM(i)
-            for j in movies:
-                if j.getTitle()==i:
-                    for k in self.__repositoryR.getAll():
-                        if j.getId()==k.getMovie():
-                            for l in self.__repositoryC.getAll():
-                                if l.getId()==k.getCustomer():
-                                    obj.set_nameC(l.getName())
-                                    break
-                            break
-                        break
-            for ii in range(len(lst)):
-                if lst[ii].get_nameC()==obj.get_nameC():
-                    obj.set_noRents(obj.get_noRents()+1)
-                
-            lst.append(obj)
-        return lst
+                 
     def top30(self):
         '''
-        get a list of rentDTO objects with those renters
+        get a list of rent objects with those renters
         who are in 30% renters with the most rented movies 
        '''
-        lst=self.getListOfMostRented()
-        lst=sorted(lst,key=lambda k:k.get_noRents(),reverse=True)
-        top=int(0.3*len(lst))
-        i=0
-        keep=[]
-        if top!=0:
-            keep=lst[0:top]
-        return keep
+        pass
