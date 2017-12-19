@@ -20,6 +20,18 @@ class generic_sort:
     def get_reverse(self):
         return self.__reverse
 
+
+    def set_lst(self, value):
+        self.__lst = value
+
+
+    def set_key(self, value):
+        self.__key = value
+
+
+    def set_reverse(self, value):
+        self.__reverse = value
+
     def sort(self):
         pass
     
