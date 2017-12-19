@@ -5,6 +5,7 @@ Created on Dec 5, 2017
 '''
 from domain.rentersName import rentersName
 from domain.mostRentedMovies import rentedMovies
+from domain.top30 import top30Renters
 class serviceReports:
     def __init__(self,repoR,repoC,repoM):
         self.__repositoryR = repoR
@@ -109,4 +110,22 @@ class serviceReports:
         get a list of rent objects with those renters
         who are in 30% renters with the most rented movies 
        '''
-        pass
+        listTop30=[]
+        nMax,mostRMovies=self.mostRentedMovies()
+        rents=self.__repositoryR.getAll()
+        customers=self.__repositoryC.getAll()
+        movies=self.__repositoryM.getAll()
+        for i in range(len(mostRMovies)):
+            for ii in range(len(movies)):
+                if mostRMovies[i]==movies[ii].getTitle():
+                    for j in range(len(rents)):
+                        if rents[j].getMovie()==movies[ii].getId():
+                            for jj in range(len(customers)):
+                                if customers[jj].getId()==rents[j].getCustomer():
+                                    ob=top30Renters(customers[jj].getName(),movies[ii].getTitle())
+                                    listTop30.append(ob)
+                                    break
+        
+        
+        return listTop30[:int(nMax)]
+        

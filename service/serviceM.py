@@ -5,6 +5,8 @@ Created on Nov 13, 2017
 '''
 from domain.movie import movie
 import random
+from sort.sorting import sorting
+from sort.algorithms.Algorithm import Algorithm
 
 class moviesService:
     def __init__(self,repo,valid):
@@ -37,6 +39,7 @@ class moviesService:
         m=movie(idM,title,genre,descr)
         self.__validator.validate(m)
         self.__repository.modify(m)
+       
     
     def remove(self,idM):
         '''
@@ -57,7 +60,10 @@ class moviesService:
              ->valueK(the value of key)
         out: the movie
         '''
-        return self.__repository.find(nameK,valueK)
+        #return self.__repository.find(nameK,valueK)
+        lst=self.__repository.getAll()
+        found=[]
+        return self.__repository.findRec(nameK,valueK,lst,found)
     
     def filterBy(self,nameK,valueK):
         '''
@@ -74,6 +80,25 @@ class moviesService:
                 filteredMovies.append(allMovies[i])
         return filteredMovies
        
+    def filterByRec(self,nameK,valueK,lst,found):
+        '''
+        find movies with a specified key whose value is a string
+        in:  ->nameK(the name of key):can be title/genre in this case
+             ->valueK(the value of key)
+        out: the movie
+        '''
+        if lst==[] and len(found)!=0:
+            return found
+        elif lst==[]:
+            raise ("It doesn't exist!\n")
+        elif (nameK=="title" and lst[0].getTitle()==valueK) or\
+                (nameK=="genre" and lst[0].getGenre()==valueK) :
+                found.append(lst[0])
+                return self.findRec(nameK,valueK,lst[1:],found)
+        else:
+            return self.findRec(nameK,valueK,lst[1:],found)
+     
+  
     
     def sortBy(self,nameK):
         '''
@@ -82,8 +107,9 @@ class moviesService:
         out:-
         '''
         if nameK=="id":
-            return sorted(self.__repository.getAll(), key=lambda k:k.getId(),reverse=True)
-        
+            #return sorted(self.__repository.getAll(), key=lambda k:k.getId(),reverse=True)
+            #return bingoSort(self.getAll(), key=lambda k:k.getId(), reverse=True).sort(self.getAll())
+            return sorting.sort(self.getAll(), key=lambda k:k.getId(), reverse=True, algorithm=Algorithm.MERGE_SORT)
     def get(self,idM):
         '''
         gets a movie

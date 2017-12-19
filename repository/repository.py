@@ -1,8 +1,8 @@
 '''
 Created on Nov 13, 2017
 
-@author: Monica
-'''
+@author: Monica'''
+
 class repositoryExceptions(Exception):
         pass
         
@@ -40,12 +40,15 @@ class repository:
         in:elem
         out:-
         '''        
-        for i in self._elems.values():
-            if i.getId()==elem.getId():
-                self._elems[elem.getId()]=elem
-            else:
-                raise repositoryExceptions("This id does not exist in the elements list!")
-    
+        if elem.getId() in self._elems.keys():
+            self._elems[elem.getId()]=elem
+        else:
+            raise repositoryExceptions("This id does not exist in the elements list!")
+
+   
+        
+           
+        
     def sizeOfList(self):
         '''
         the numbers of elements
@@ -88,6 +91,31 @@ class repository:
                 
         return foundElems
 
+    def findRec(self,nameK,valueK,lst,found):
+        '''
+        finds an element by a given field
+        in: ->nameK(the name of key)
+            ->valueK(the value of the key)
+            ->index: starts from 0 until the end of the elements list
+        out: the element or the exception
+        '''
+        if lst==[] and len(found)!=0:
+            return found
+        elif lst==[]:
+            raise repositoryExceptions("It doesn't exist!\n")
+        elif ( (nameK=="id" and lst[0].getId()==valueK) or\
+                              (nameK=='title' and lst[0].getTitle()==valueK) or\
+                              (nameK=='genre' and lst[0].getGenre()==valueK) or\
+                              (nameK=='name' and lst[0].getName()==valueK) or\
+                              (nameK=='cnp' and lst[0].getCnp()==valueK)or\
+                              (nameK=='idM' and lst[0].getMovie()==valueK)or\
+                              (nameK=='idC' and lst[0].getCustomer()==valueK)):
+            found.append(lst[0])
+            return self.findRec(nameK,valueK,lst[1:],found)
+        else:
+            return self.findRec(nameK,valueK,lst[1:],found)
+            
+        
     def get(self,idd):
         '''
         gets the elements

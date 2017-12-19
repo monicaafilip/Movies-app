@@ -157,11 +157,14 @@ class rentsMenu:
         '''
         populate the repository with random elements
         '''
-        try:
-            self.__serviceRent.populateRandom(limit) 
-            print("The repository was populated successfully!\n")
-        except repositoryExceptions as ex:
-            print(ex)
+        while limit!=0:
+            try:
+                limit=self.__serviceRent.populateRandom(limit) 
+                print("The repository was populated successfully!\n")
+            except repositoryExceptions:
+                print("The repository was populated successfully but with less rents!\n")
+                break
+        
     def show(self):
         while True:
             print("===Rents menu===")
@@ -223,14 +226,10 @@ class rentsMenu:
                     self.sortById()
                 elif com==5:
                     try:
-                        limit=int(input("Give the number of rents! bE careful the number not be bigger than the number of movies or customers!"))
-                        '''if limit>len(self.__serviceRent.__repositoryC.getAll()) or limit> self.__serviceRent.__repositoryM.getAll():
-                            print("The number must be smaller than the number of customers and movies!")
-                        else:'''
+                        limit=int(input("Give the number of rents:"))
                         self.populateRandom(limit)
                     except ValueError:
-                        print("The limit can't be integer!")    
-                    except validatorRentExceptions as ex:
-                        print(ex)
+                        print("The limit can't be string!\n")    
+                    
             except validatorCommandsException as ex:
                 print(ex)

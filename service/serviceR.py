@@ -5,6 +5,7 @@ Created on Nov 22, 2017
 '''
 from domain.rent import rent
 import random
+from validator.validatorRent import validatorRentExceptions
 class rentsService:
     def __init__(self,repoM,repoC,repoR,valid):
         '''
@@ -140,6 +141,7 @@ class rentsService:
         for i in self.__repositoryC.getAll():
             lst.append(int(i.getId()))
         return lst
+    
     def populateRandom(self,limit):
         while limit!=0:
             idR=random.randrange(1000)
@@ -147,3 +149,4 @@ class rentsService:
             idC=random.choices(self.randomCustomer())[0]
             rent=self.createRent(idR, idM, idC)
             limit-=1
+        

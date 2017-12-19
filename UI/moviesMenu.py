@@ -69,11 +69,14 @@ class moviesMenu:
         '''finds a movie by id'''
         idM=input("Give the id:")
         try:
+            idM=int(idM)
             m=self.__serviceMovie.find("id",idM)
             if len(m)==0:
                 print("No movie found!\n")
             else:
-                print("Movie found succesfully ! "+m.__str__())
+                print("Movie found succesfully ! "+m[0].__str__())
+        except ValueError:
+            print("Id invalid!\n")
         except repositoryExceptions as ex:
             print(ex)
         except validatorMovieExceptions as ex:
@@ -141,6 +144,27 @@ class moviesMenu:
             print(ex)
         except validatorMovieExceptions as ex:
             print(ex)
+        
+    def filterByTitleRec(self):
+        '''
+        prints the movies with a specified title
+        '''
+        title=input("Give the title:")
+        try:
+            found=[]
+            m=self.__serviceMovie.filterByRec("title",title,self.__serviceMovie.getAll(),found)
+            
+            if len(m)==0:
+                print("No movie found with specified title!\n")
+            else:
+                i=0
+                while i<len(m):
+                    print("Movie with the title "+title+":"+m[i].__str__())
+                    i+=1
+        except repositoryExceptions as ex:
+            print(ex)
+        except validatorMovieExceptions as ex:
+            print(ex)
             
     def filterByGenre(self):
         '''
@@ -170,8 +194,11 @@ class moviesMenu:
         newGenre=input("Give a new genre:")
         newDescription=input("Give a new description:")
         try:
+            newId=int(newId)
             self.__serviceMovie.update(newId,newTitle,newGenre,newDescription)
             print("Movie modified succesfully!")
+        except ValueError:
+            print("Invalid id!\n")
         except repositoryExceptions as ex:
             print(ex)
         except validatorMovieExceptions as ex:
@@ -198,12 +225,13 @@ class moviesMenu:
     def populateRandom(self,limit):
         '''populate the repository with random elements
         '''
-        try:
-            self.__serviceMovie.populateRandom(limit) 
-            print("The repository was populated successfully!\n")
-        except repositoryExceptions as ex:
-            print(ex)
-        
+        while limit!=0:
+            try:
+                self.__serviceMovie.populateRandom(limit) 
+                print("The repository was populated successfully!\n")
+            except repositoryExceptions :
+                print("The repository was populated successfully but with less movies!\n")
+                break
     def groupeByGenre(self):
         '''
         prints the id sum of movies with the same genre

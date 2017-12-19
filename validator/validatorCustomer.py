@@ -33,7 +33,7 @@ class validatorCustomer:
                 if cnpp<0:
                     errors.append("The cnp must be an integer positive number") 
             except:
-                errors.appednd("The cnp cannot be string!\n")
+                errors.append("The cnp cannot be string!\n")
         if len(errors):
             raise validatorCustomerExceptions(errors)
         
