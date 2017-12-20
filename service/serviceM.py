@@ -110,6 +110,7 @@ class moviesService:
             #return sorted(self.__repository.getAll(), key=lambda k:k.getId(),reverse=True)
             #return bingoSort(self.getAll(), key=lambda k:k.getId(), reverse=True).sort(self.getAll())
             return sorting.sort(self.getAll(), key=lambda k:k.getId(), reverse=True, algorithm=Algorithm.MERGE_SORT)
+            
     def get(self,idM):
         '''
         gets a movie
@@ -153,3 +154,4 @@ class moviesService:
             #self.createMovie(idM,title,genre,description)
             self.__repository.store(movie(idM,title,genre,description))
             limit-=1
+        return limit

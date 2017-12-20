@@ -113,6 +113,7 @@ class customersService:
             cnp=random.randint(1000000000000,100000000000000)
             self.createCustomer(idC, name, cnp)
             limit-=1
+        return limit
 
     def getAllId(self):
         '''

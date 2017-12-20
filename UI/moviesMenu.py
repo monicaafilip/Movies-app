@@ -227,7 +227,7 @@ class moviesMenu:
         '''
         while limit!=0:
             try:
-                self.__serviceMovie.populateRandom(limit) 
+                limit=self.__serviceMovie.populateRandom(limit) 
                 print("The repository was populated successfully!\n")
             except repositoryExceptions :
                 print("The repository was populated successfully but with less movies!\n")

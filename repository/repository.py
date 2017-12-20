@@ -46,9 +46,6 @@ class repository:
             raise repositoryExceptions("This id does not exist in the elements list!")
 
    
-        
-           
-        
     def sizeOfList(self):
         '''
         the numbers of elements
@@ -76,6 +73,14 @@ class repository:
             ->valueK(the value of the key)
             ->index: starts from 0 until the end of the elements list
         out: list of elements
+        '''
+        '''
+        ----the complexity of this algorithm---
+        best case:when the found element is on the first position
+            t(n)=1
+        worst case:when the found element is on the last position
+            t(n)=n
+        =>O(n)=n
         '''
         allElems=list(self._elems.values())
         foundElems=[]

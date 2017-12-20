@@ -149,4 +149,5 @@ class rentsService:
             idC=random.choices(self.randomCustomer())[0]
             rent=self.createRent(idR, idM, idC)
             limit-=1
+        return limit
         

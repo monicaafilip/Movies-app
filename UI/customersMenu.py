@@ -165,9 +165,9 @@ class customersMenu:
         '''
         populate the repository with random objects
         '''
-        while True:
+        while limit!=0:
             try:
-                self.__serviceCustomer.populateRandom(limit) 
+                limit=self.__serviceCustomer.populateRandom(limit) 
                 print("The repository was populated successfully!\n")
             except repositoryExceptions:
                 print("The repository was populated successfully but with less customers!\n")
